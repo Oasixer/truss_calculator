@@ -117,7 +117,7 @@ def run(th1, th2, th3, th4, th5, min_cost, debug=False):
         cost += 10 * length * 2'''
 
     # print(cost)
-    print('hi2')
+    #print('hi2')
 
     members = [AD, AB, BD, BC, DE, CE, CD, CC]
     names = ['AD', 'AB', 'BD', 'BC', 'DE', 'CE', 'CD', 'CC']
