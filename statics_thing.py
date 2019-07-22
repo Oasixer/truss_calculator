@@ -3,10 +3,10 @@ import tqdm
 
 pi = np.pi
 
-th2s = [12345]
-th3s = [12345]
-th4s = [12345]
-th5s = [12345]
+th2s = []
+th3s = []
+th4s = []
+th5s = []
 th2_best = [12345]
 th3_best = [12345]
 th4_best = [12345]
@@ -55,11 +55,14 @@ def run(th1, th2, th3, th4, th5, min_cost, debug=False):
     #   if length < 1:
     # print(f'ERROR! {name} < 0, = {length}')
     #       return False
-    print('hi')
+    # print('hi')
 
-    AD = 9 / sin1
-    if AD < -9 or AD > 12:
-        return 100000
+    CC = -9  # constraints
+    DE = 12
+    AD = 12  # dont fuck with th1 or this wont be true
+    #AD = 9 / sin1
+    # if AD < -9 or AD > 12:
+    #    return 100000
     AB = -AD * cos1
     if AB < -9 or AB > 12:
         return 100000
@@ -70,21 +73,13 @@ def run(th1, th2, th3, th4, th5, min_cost, debug=False):
     BC = AB - BD * cos2
     if BC < -9 or BC > 12:
         return 100000
-    # print('hi3')
-    DE = (4.5 * cos3 / sin3 + BD * cos2 + AD * cos2m1) / (sin4m5 * cos3 / sin3 + cos4m5)
-    if DE < -9 or DE > 12:
-        print(DE)
-        return 100000
-    # print('hi4')
-    CE = -DE * sin4m5 / sin4
-    if CE < -9 or CE > 12:
-        return 100000
     # print('hi5')
-    CD = (-4.5 - DE * sin4m5) / sin3
+    CD = (DE * sin4m5 - 4.5) / sin3
     if CD < -9 or CD > 12:
         return 100000
-    CC = BC - CE * cos4 + CD * cos3
-    if CC < -9 or CC > 12:
+
+    CE = (9 + BC + CD * cos3) / cos4
+    if CE < -9 or CE > 12:
         return 100000
 
     '''for member, name in zip(members, names):
@@ -109,7 +104,7 @@ def run(th1, th2, th3, th4, th5, min_cost, debug=False):
     for length in lengths:
         cost += 20 * length
 
-    if cost > 600:
+    if cost > 700:
         return cost
 
     '''for name, length in zip(l_names, lengths):
@@ -124,7 +119,7 @@ def run(th1, th2, th3, th4, th5, min_cost, debug=False):
     names = ['AD', 'AB', 'BD', 'BC', 'DE', 'CE', 'CD', 'CC']
     l_names = ['l_BD', 'l_AD', 'l_CD', 'l_CE', 'l_DE']
 
-    if(cost < 620):
+    if(cost < 700):
         th2s.append(th2)
         th3s.append(th3)
         th4s.append(th4)
