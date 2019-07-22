@@ -66,19 +66,20 @@ def run(th1, th2, th3, th4, th5, min_cost, debug=False):
     BD = -4.5 / sin2
     if BD < -9 or BD > 12:
         return 100000
-    #print('hi2')
+    # print('hi2')
     BC = AB - BD * cos2
     if BC < -9 or BC > 12:
         return 100000
-    #print('hi3')
+    # print('hi3')
     DE = (4.5 * cos3 / sin3 + BD * cos2 + AD * cos2m1) / (sin4m5 * cos3 / sin3 + cos4m5)
     if DE < -9 or DE > 12:
+        print(DE)
         return 100000
-    #print('hi4')
+    # print('hi4')
     CE = -DE * sin4m5 / sin4
     if CE < -9 or CE > 12:
         return 100000
-    #print('hi5')
+    # print('hi5')
     CD = (-4.5 - DE * sin4m5) / sin3
     if CD < -9 or CD > 12:
         return 100000
@@ -117,7 +118,7 @@ def run(th1, th2, th3, th4, th5, min_cost, debug=False):
         cost += 10 * length * 2'''
 
     # print(cost)
-    #print('hi2')
+    # print('hi2')
 
     members = [AD, AB, BD, BC, DE, CE, CD, CC]
     names = ['AD', 'AB', 'BD', 'BC', 'DE', 'CE', 'CD', 'CC']
@@ -145,7 +146,7 @@ def run(th1, th2, th3, th4, th5, min_cost, debug=False):
     return cost
 
 
-n_each = 80
+n_each = 65
 n = n_each ** 4
 minim = 0.3
 
@@ -154,16 +155,16 @@ min_cost = 100000000
 print(f'running {n} iterations')
 
 # new constraints
-th4_min = 0.01
-th4_max = 1.25
+th4_min = 0.45
+th4_max = 1
 
-th5_min = 0.01
-th5_max = 1.25  # usuallymin of this and th4
+th5_min = 0.25
+th5_max = 0.7  # usuallymin of this and th4
 
-th3_min = 0.01
+th3_min = 0.3
 th3_max = 1  # usually 0.6
 
-th2_min = 1.4
+th2_min = 1
 th2_max = 2
 
 th1 = [np.arcsin(9 / 12)]
@@ -171,19 +172,19 @@ th1 = [np.arcsin(9 / 12)]
 #th3 = [0.45]
 #th5 = [0.45]
 i = 0
-#th4 = np.linspace(th4_min, th4_max, num=n_each, endpoint=False)
-th4 = [0.85]
+th4 = np.linspace(th4_min, th4_max, num=n_each, endpoint=False)
+#th4 = [0.85]
 t = tqdm.tqdm(total=n, dynamic_ncols=True, leave=False,
               bar_format='{l_bar}{bar}|[Elapsed: {elapsed}][Remaining: {remaining}][Samples: {n_fmt}/{total_fmt}][{rate_fmt}{postfix}]')
 for th4_ in th4:
-    # th5 = np.linspace(th5_min, th5_max, num=n_each, endpoint=False)  # min(th4_, th5_max), num=n_each, endpoint=False)
-    th5 = [1]
-    #th3 = np.linspace(th3_min, min(th3_max, pi - th4_), num=n_each, endpoint=False)
-    th3 = [0.635]
+    th5 = np.linspace(th5_min, th5_max, num=n_each, endpoint=False)  # min(th4_, th5_max), num=n_each, endpoint=False)
+    #th5 = [1]
+    th3 = np.linspace(th3_min, min(th3_max, pi - th4_), num=n_each, endpoint=False)
+    #th3 = [0.635]
     # print(th3)
     for th3_ in th3:
-        th2 = [1.8]
-        #th2 = np.linspace(th2_min, min(th2_max, pi - th3_), num=n_each, endpoint=False)
+        #th2 = [1.8]
+        th2 = np.linspace(th2_min, min(th2_max, pi - th3_), num=n_each, endpoint=False)
         for th2_ in th2:
             # th1_ constrained to 1 value above
             for th1_ in th1:
