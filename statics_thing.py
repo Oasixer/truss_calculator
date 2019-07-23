@@ -15,6 +15,7 @@ def run_based_on_force(CE):
     #----------------------------------------
 
     # everything below here is derived until we get to th4 which we can't derive
+
     th1 = np.arcsin(9 / AD)
     sin1 = np.sin(th1)
     cos1 = np.cos(th1)
@@ -57,7 +58,8 @@ def run_based_on_force(CE):
         cos4 = np.cos(th4)
         if print_info:
             print(f'run th4={th4} ', end='')
-        CD = CE * cos4 / cos3
+        #CD = CE * cos4 / cos3
+        CD = (-4.5 - CE * sin4) / sin3
         if CD < -9:
             if print_info:
                 print(f'CD={CD:.5f} (too much force) ', end='')
@@ -145,7 +147,7 @@ def run_based_on_force(CE):
 
 
 min_cost = None
-th4_n = 500
+th4_n = 50
 th4_min = 0.2
 th4_max = pi / 2 - 0.01
 global th4_array
@@ -153,7 +155,7 @@ th4_array = np.linspace(th4_min, th4_max, num=th4_n, endpoint=False)
 
 CE_min = -4
 CE_max = -9
-CE_n = 100
+CE_n = 10
 CE_array = np.linspace(CE_min, CE_max, num=CE_n, endpoint=True)
 
 for ce in CE_array:
