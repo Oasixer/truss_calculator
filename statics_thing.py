@@ -58,8 +58,9 @@ def run_based_on_force(CE):
         cos4 = np.cos(th4)
         if print_info:
             print(f'run th4={th4} ', end='')
-        #CD = CE * cos4 / cos3
-        CD = (-4.5 - CE * sin4) / sin3
+        CD = CE * cos4 / cos3
+        #CD = (-4.5 - CE * sin4) / sin3
+
         if CD < -9:
             if print_info:
                 print(f'CD={CD:.5f} (too much force) ', end='')
@@ -68,7 +69,11 @@ def run_based_on_force(CE):
             if print_info:
                 print(f'CD={CD:.5f} ', end='')
 
-        CDx = CD * cos4
+        CDx = CD * cos3
+        CEx = CE * cos4
+        print(f'Pls be zero CEx - CDx {CEx - CDx}')
+        print(f'Pls be zero CD - CE * cos4 / cos3 {CD - CE * cos4 / cos3}')
+
         ADx = -AB
         # BDx was calculated when we calculated BD
         DEx = ADx - BDx - CDx  # cool, now we have a value for DEx
