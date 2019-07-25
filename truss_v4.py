@@ -2,7 +2,7 @@ import numpy as np
 from math import sqrt
 
 pi = np.pi
-min_cost_to_print_vals = 509
+min_cost_to_print_vals = 700
 
 # There are 3 inputs: h1, h2, and d
 
@@ -26,6 +26,8 @@ def run(h1, h2, d):
 
     l_ADx = 3 + d
     l_ADy = h1
+
+    
     l_AD = sqrt(l_ADx**2 + l_ADy**2)
 
     if h1/l_AD < 9/12: # see restrictions above
@@ -66,7 +68,7 @@ def run(h1, h2, d):
     sin4 = np.sin(th4)
     cos4 = np.cos(th4)
 
-    DE = 40.5 / (-3*sin3 + h1 * cos3)
+    DE = 40.5 / ((l_ADx-6)*sin3 + h1 * cos3)
     CE = DE * (sin3/sin4)
     CC = -DE*cos3 - CE*cos4
     BD = -4.5/sin2
@@ -74,7 +76,7 @@ def run(h1, h2, d):
         AD = 9
     AD = 9/sin1
     AB = -AD*cos1
-    BC = BD - BD*cos2
+    BC = -AD*cos1 - BD*cos2
     CDy = -(CE*sin4 + 4.5)
     CDx = CC + CE*cos4 - BC
     if (CDx >= 0 and CDy >=0):
@@ -97,15 +99,19 @@ def run(h1, h2, d):
             fail = True
 
     l_AB = l_BC = l_CC = 3
+    #print(fail)
 
 
     lengths_double = np.array([l_AB, l_BC, l_AD, l_BD, l_CD, l_DE, l_CE])
+    lengths = [l_AB, l_BC, l_AD, l_BD, l_CD, l_DE, l_CE, l_CC]
+    l_names = ['l_AB', 'l_BC', 'l_AD', 'l_BD', 'l_CD', 'l_DE', 'l_CE', 'l_CC']
     lengths_single = np.array([CC])
     n_joints = 9
     cost_per_joint = 5
     cost_per_m = 10
 
     cost = n_joints * cost_per_joint + cost_per_m * (2*np.sum(lengths_double) + np.sum(lengths_single)) 
+    #print(cost)
 
     if not fail:
         if cost < min_cost_to_print_vals:
@@ -113,6 +119,10 @@ def run(h1, h2, d):
             print(f', FORCES:', end='')
             for force, name in zip(forces, names):
                  print(f' {name} {force:.4f}', end='')
+            for l, name in zip(lengths, l_names):
+                print(f'{name}, {l}')
+            print(l_ADx)
+            print(l_ADy)
             print()
     else:
         #print('fail: ', end='')
@@ -144,9 +154,9 @@ d_min = -2.7
 d_n = 100
 d_array = np.linspace(d_min, d_max, d_n, endpoint=True)
 
-#h1_array = [2.8]
-#h2_array = [1.9]
-#d_array = [-1]
+h1_array = [2.784]
+h2_array = [4.752]
+d_array = [-0.551]
 
 for h1 in h1_array:
     for h2 in h2_array:

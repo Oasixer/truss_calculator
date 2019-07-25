@@ -5,7 +5,7 @@ from math import sqrt
 pi = np.pi
 
 
-def run_based_on_force(CE):
+def run_based_on_force(CD):
     # CONSTRAINTS ---------------------------
     AD = 12
     #DE = 12
@@ -43,41 +43,44 @@ def run_based_on_force(CE):
     cos3 = np.cos(th3)
 
     # At this point, we have derived AB, BD, lBD, lCD, th2, th3, a1, a2
-    # But we need to choose a value of th4 or loop through values for th4.
 
-    # th4 is important because of the following equation:
-    # CD = CE * cos(th4) / cos(th3)
-    # this means that the higher the value of th4 is, the higher the force on CD is
+    # turns out since we decided CD, we can calculate what we need th4 to be
 
-    # We are gonna loop through th4 values
 
-    def run_based_on_th4(th4):
+    def run_and_find_th4():
         print_info = True
         fail = False
-        sin4 = np.sin(th4)
-        cos4 = np.cos(th4)
+
         if print_info:
             print(f'run th4={th4} ', end='')
-        CD = CE * cos4 / cos3
+        #CD = CE * cos4 / cos3
         #CD = (-4.5 - CE * sin4) / sin3
-
-        if CD < -9:
+        #CEx = CE * cos4
+        #CEy = CE * sin4
+        CDx = CD *cos3
+        CDy = CD * sin3
+        CEx = CDx
+        CEy = -4.5-CDy
+        CE = -sqrt(CEx**2 + CEy ** 2)
+        th4 = np.arcsin(abs(CDy)/abs(CD))
+        print(CE)
+        if CE < -9:
             if print_info:
-                print(f'CD={CD:.5f} (too much force) ', end='')
+                print(f'CE={CE:.5f} (too much force) ', end='')
             fail = True
         else:
             if print_info:
-                print(f'CD={CD:.5f} ', end='')
+                print(f'CD={CE:.5f} ', end='')
 
-        CDx = CD * cos3
-        CEx = CE * cos4
+        #CDx = CD * cos3
+       # CEx = CE * cos4
         print(f'Pls be zero CEx - CDx {CEx - CDx}')
         print(f'Pls be zero CD - CE * cos4 / cos3 {CD - CE * cos4 / cos3}')
 
         ADx = -AB
         # BDx was calculated when we calculated BD
         DEx = ADx - BDx - CDx  # cool, now we have a value for DEx
-        CEy = CE * sin4
+        #CEy = CE * sin4
         DEy = -CEy
         DE = sqrt(DEx**2 + DEy**2)
         if DE > 12:
