@@ -1,6 +1,6 @@
 import numpy as np
 from math import sqrt as sqrt
-
+import tqdm
 BDy = CDy = -4.5
 ADy = 9
 

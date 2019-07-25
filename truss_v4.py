@@ -1,8 +1,10 @@
 import numpy as np
 from math import sqrt
+import tqdm
 
 pi = np.pi
-min_cost_to_print_vals = 700
+min_cost_to_print_vals = 506
+vars_ = [0,0,0]
 
 # There are 3 inputs: h1, h2, and d
 
@@ -14,7 +16,7 @@ min_cost_to_print_vals = 700
 # h1 / l_BD >= 0.5
 # h1 / l_AD >= 9/12
 
-def run(h1, h2, d):
+def run(h1, h2, d, min_cost):
     # CALCULATE LENGTHS AND ANGLES------------------------------------------
     if 3 + d == 0:
         th1 = pi
@@ -97,6 +99,7 @@ def run(h1, h2, d):
         #print(f)
         if f > 12 or f < -9:
             fail = True
+            return
 
     l_AB = l_BC = l_CC = 3
     #print(fail)
@@ -113,25 +116,43 @@ def run(h1, h2, d):
     cost = n_joints * cost_per_joint + cost_per_m * (2*np.sum(lengths_double) + np.sum(lengths_single)) 
     #print(cost)
 
+    #print(f'pass, cost {cost:.2f}, h1 {h1:.3f} h2 {h2:.3f} d {d:.3f}')
+    #print(f', FORCES:', end='')
+    #for force, name in zip(forces, names):
+    #     print(f' {name} {force:.4f}', end='')
+    #for l, name in zip(lengths, l_names):
+    #    print(f'{name}, {l}')
+    #print(l_ADx)
+    #print(l_ADy)
+    #print()
+
     if not fail:
-        if cost < min_cost_to_print_vals:
-            print(f'pass, cost {cost:.2f}, h1 {h1:.3f} h2 {h2:.3f} d {d:.3f}')
-            print(f', FORCES:', end='')
-            for force, name in zip(forces, names):
-                 print(f' {name} {force:.4f}', end='')
-            for l, name in zip(lengths, l_names):
-                print(f'{name}, {l}')
-            print(l_ADx)
-            print(l_ADy)
-            print()
+        if not min_cost:
+            vars_[0] = h1
+            vars_[1] = h2
+            vars_[2] = d
+        elif cost < min_cost:
+
+            #print(f'pass, cost {cost:.2f}, h1 {h1:.3f} h2 {h2:.3f} d {d:.3f}')
+            #print(f', FORCES:', end='')
+            #for force, name in zip(forces, names):
+            #     print(f' {name} {force:.4f}', end='')
+            #for l, name in zip(lengths, l_names):
+            #    print(f'{name}, {l}')
+            #print(l_ADx)
+            #print(l_ADy)
+            #print()
+            vars_[0] = h1
+            vars_[1] = h2
+            vars_[2] = d
+        '''
     else:
         #print('fail: ', end='')
         #print(f'FORCES:', end='')
         #for force, name in zip(forces, names):
-        #     print(f' {name} {force:.4f}', end='')
-        #print()
+        #     print(
         pass
-    
+    '''
 
     return cost
 
@@ -141,27 +162,54 @@ def run(h1, h2, d):
 
 h1_max = 6
 h1_min = 1.2
-h1_n = 100
+h1_n = 10000
 h1_array = np.linspace(h1_min, h1_max, h1_n, endpoint=False)
 
 h2_max = 6
 h2_min = 1.2
-h2_n = 100
+h2_n = 10000
 h2_array = np.linspace(h2_min, h2_max, h2_n, endpoint=False)
 
 d_max = 2.9
 d_min = -2.7
-d_n = 100
+d_n = 10000
 d_array = np.linspace(d_min, d_max, d_n, endpoint=True)
 
 h1_array = [2.784]
-h2_array = [4.752]
-d_array = [-0.551]
+h1_n=1
+
+#h2_array = [4.752]
+#d_array = [-0.551]
+
+n_total = h1_n * h2_n * d_n
+
+np.random.shuffle(h1_array)
+np.random.shuffle(h2_array)
+np.random.shuffle(d_array)
+
+t = tqdm.tqdm(total=n_total, dynamic_ncols=True, leave=False,
+              bar_format='{l_bar}{bar}|[Elapsed: {elapsed}][Remaining: {remaining}][{rate_fmt}{postfix}]')
+
+min_cost = None
 
 for h1 in h1_array:
     for h2 in h2_array:
         for d in d_array:
-            run(h1, h2, d)
+            cost = run(h1, h2, d, min_cost)
+            #print(cost)
+            t.update()
+            if not min_cost:
+                min_cost = cost
+            elif cost:
+                if cost < min_cost:
+                    min_cost = cost
+                    #print('hi')
+                    t.set_postfix({'min_cost':min_cost, 'h1,h2,d':vars_})
+
+#print(f'DONE\nmin_cost ')
+
+
+           
     
 
 
