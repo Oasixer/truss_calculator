@@ -161,23 +161,23 @@ def run(h1, h2, d, min_cost):
 
 
 
-h1_max = 6
-h1_min = 1.2
-h1_n = 10000
+h1_max = 2.7
+h1_min = 2.85
+h1_n = 800
 h1_array = np.linspace(h1_min, h1_max, h1_n, endpoint=False)
 
-h2_max = 6
-h2_min = 1.2
-h2_n = 10000
+h2_max = 4.3
+h2_min = 4.7
+h2_n = 800
 h2_array = np.linspace(h2_min, h2_max, h2_n, endpoint=False)
 
-d_max = 2.9
-d_min = -2.7
-d_n = 10000
+d_max = -0.45
+d_min = -0.65
+d_n = 800
 d_array = np.linspace(d_min, d_max, d_n, endpoint=True)
 
-h1_array = [2.784]
-h1_n=1
+#h1_array = [2.784]
+#h1_n=1
 
 #h2_array = [4.752]
 #d_array = [-0.551]
