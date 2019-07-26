@@ -127,17 +127,21 @@ def run(h1, h2, d, min_cost, print_all=False):
         out_str+= '\nLengths\n'
         for l, name in zip(lengths, l_names):
             out_str+=f'{name}, {l}\n'
+        out_str+= '\nAngles\n'
+
+        for name, ang in zip(['th1', 'th2', 'th3', 'th4'], [th1, th2, th3, th4]):
+            out_str+=f'{name}, {ang}\n'
 
         print(out_str)
 
         filename = str(datetime.datetime.now())
         filename = filename.replace(':', '_')
-        filename = filename.replace('.', '_')
+        filename = filenampython string replacee.replace('.', '_')
 
 
         with open(filename, 'w') as f:
             f.write(out_str)
-        
+
     #print(l_ADx)
     #print(l_ADy)
     #print()
@@ -227,6 +231,9 @@ except KeyboardInterrupt:
     print('KeyboardInterrupt detected. Printing vals and saving to txt.')
     run(vars_[0],vars_[1],vars_[2],None, print_all=True)
     sys.exit()
+
+print('Finished all! Printing best vals and saving to txt.')
+run(vars_[0],vars_[1],vars_[2],None, print_all=True)
 
 #print(f'DONE\nmin_cost ')
 
