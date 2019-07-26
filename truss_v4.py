@@ -136,7 +136,7 @@ def run(h1, h2, d, min_cost, print_all=False):
 
         filename = str(datetime.datetime.now())
         filename = filename.replace(':', '_')
-        filename = filenampython string replacee.replace('.', '_')
+        filename = filename.replace('.', '_')
 
 
         with open(filename, 'w') as f:
