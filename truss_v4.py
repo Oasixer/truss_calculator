@@ -1,7 +1,8 @@
 import numpy as np
 from math import sqrt
 import tqdm
-
+import sys
+import datetime
 pi = np.pi
 min_cost_to_print_vals = 506
 vars_ = [0,0,0]
@@ -16,7 +17,7 @@ vars_ = [0,0,0]
 # h1 / l_BD >= 0.5
 # h1 / l_AD >= 9/12
 
-def run(h1, h2, d, min_cost):
+def run(h1, h2, d, min_cost, print_all=False):
     # CALCULATE LENGTHS AND ANGLES------------------------------------------
     if 3 + d == 0:
         th1 = pi
@@ -117,12 +118,26 @@ def run(h1, h2, d, min_cost):
     #print(cost)
     #print(cost)
 
-    #print(f'pass, cost {cost:.2f}, h1 {h1:.3f} h2 {h2:.3f} d {d:.3f}')
-    #print(f', FORCES:', end='')
-    #for force, name in zip(forces, names):
-    #     print(f' {name} {force:.4f}', end='')
-    #for l, name in zip(lengths, l_names):
-    #    print(f'{name}, {l}')
+    if(print_all==True):
+        out_str=''
+        out_str+=f'Cost {cost}\nh1 {h1}\nh2 {h2}\nd {d}'
+        out_str+=f'\n\nFORCES\n'
+        for force, name in zip(forces, names):
+            out_str+=f'{name} {force}\n'
+        out_str+= '\nLengths\n'
+        for l, name in zip(lengths, l_names):
+            out_str+=f'{name}, {l}\n'
+
+        print(out_str)
+
+        filename = str(datetime.datetime.now())
+        filename = filename.replace(':', '_')
+        filename = filename.replace('.', '_')
+
+
+        with open(filename, 'w') as f:
+            f.write(out_str)
+        
     #print(l_ADx)
     #print(l_ADy)
     #print()
@@ -161,19 +176,19 @@ def run(h1, h2, d, min_cost):
 
 
 
-h1_max = 2.7
-h1_min = 2.85
-h1_n = 800
+h1_max = 2.71
+h1_min = 2.725
+h1_n = 400
 h1_array = np.linspace(h1_min, h1_max, h1_n, endpoint=False)
 
-h2_max = 4.3
-h2_min = 4.7
-h2_n = 800
+h2_max = 4.503
+h2_min = 4.46
+h2_n = 400
 h2_array = np.linspace(h2_min, h2_max, h2_n, endpoint=False)
 
-d_max = -0.45
-d_min = -0.65
-d_n = 800
+d_max = -0.6
+d_min = -0.615
+d_n = 400
 d_array = np.linspace(d_min, d_max, d_n, endpoint=True)
 
 #h1_array = [2.784]
@@ -193,19 +208,25 @@ t = tqdm.tqdm(total=n_total, dynamic_ncols=True, leave=True,
 
 min_cost = None
 
-for h1 in h1_array:
-    for h2 in h2_array:
-        for d in d_array:
-            cost = run(h1, h2, d, min_cost)
-            #print(cost)
-            t.update()
-            if not min_cost:
-                min_cost = cost
-            elif cost:
-                if cost < min_cost:
+try:
+    for h1 in h1_array:
+        for h2 in h2_array:
+            for d in d_array:
+                cost = run(h1, h2, d, min_cost)
+                #print(cost)
+                t.update()
+                if not min_cost:
                     min_cost = cost
-                    #print('hi')
-                    t.set_postfix({'min_cost':str(min_cost), 'h1,h2,d':vars_})
+                elif cost:
+                    if cost < min_cost:
+                        min_cost = cost
+                        #print('hi')
+                        str_vars = str(vars_)
+                        t.set_postfix({'min_cost':str(min_cost), 'h1,h2,d':str_vars})
+except KeyboardInterrupt:
+    print('KeyboardInterrupt detected. Printing vals and saving to txt.')
+    run(vars_[0],vars_[1],vars_[2],None, print_all=True)
+    sys.exit()
 
 #print(f'DONE\nmin_cost ')
 
