@@ -115,6 +115,7 @@ def run(h1, h2, d, min_cost):
 
     cost = n_joints * cost_per_joint + cost_per_m * (2*np.sum(lengths_double) + np.sum(lengths_single)) 
     #print(cost)
+    #print(cost)
 
     #print(f'pass, cost {cost:.2f}, h1 {h1:.3f} h2 {h2:.3f} d {d:.3f}')
     #print(f', FORCES:', end='')
@@ -204,7 +205,7 @@ for h1 in h1_array:
                 if cost < min_cost:
                     min_cost = cost
                     #print('hi')
-                    t.set_postfix({'min_cost':min_cost, 'h1,h2,d':vars_})
+                    t.set_postfix({'min_cost':str(min_cost), 'h1,h2,d':vars_})
 
 #print(f'DONE\nmin_cost ')
 
