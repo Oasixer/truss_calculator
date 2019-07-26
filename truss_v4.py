@@ -188,7 +188,7 @@ np.random.shuffle(h1_array)
 np.random.shuffle(h2_array)
 np.random.shuffle(d_array)
 
-t = tqdm.tqdm(total=n_total, dynamic_ncols=True, leave=False,
+t = tqdm.tqdm(total=n_total, dynamic_ncols=True, leave=True,
               bar_format='{l_bar}{bar}|[Elapsed: {elapsed}][Remaining: {remaining}][{rate_fmt}{postfix}]')
 
 min_cost = None
